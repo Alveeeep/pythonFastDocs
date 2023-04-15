@@ -25,3 +25,8 @@ async def page(request: Request, page_name: str):
         "page": page_name
     }
     return templates.TemplateResponse("page.html", {"request": request, "data": data})
+
+
+@router.get("/test", response_class=HTMLResponse)
+async def home(request: Request):
+    return 'good job!'
