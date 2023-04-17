@@ -1,12 +1,14 @@
 from fastapi import FastAPI, Request
 from .routers import search
 from fastapi.middleware.cors import CORSMiddleware
+from app.database.models import Base
+from app.database.database import engine
 
 
 app = FastAPI()
 
 app.include_router(search.router)
-
+Base.metadata.create_all(bind=engine)
 
 origins = [
     "http://localhost",

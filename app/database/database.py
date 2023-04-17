@@ -4,7 +4,7 @@ from sqlalchemy.orm import sessionmaker
 from dotenv import dotenv_values
 
 info = dotenv_values("app/.env")
-SQLALCHEMY_DATABASE_URL = "postgresql+psycopg2://{0}:{1}@{2}:5433/{3}".format(info['LOGIN'], info['PASSWORD'],
+SQLALCHEMY_DATABASE_URL = "postgresql+psycopg2://{0}:{1}@{2}:5454/{3}".format(info['LOGIN'], info['PASSWORD'],
                                                                               info['HOST'], info['NAME'])
 engine = create_engine(
     SQLALCHEMY_DATABASE_URL, echo=True, future=True
