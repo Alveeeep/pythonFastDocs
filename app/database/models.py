@@ -1,4 +1,4 @@
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, String
+from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, Text
 
 from .database import Base
 
@@ -8,4 +8,4 @@ class Okpd(Base):
 
     id = Column(Integer, primary_key=True)
     number = Column(String)
-    description = Column(String)
+    description = Column(Text)

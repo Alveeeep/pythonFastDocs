@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Request, Depends, HTTPException
+from sqlalchemy.ext.declarative import declarative_base
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from app.database.database import get_db
@@ -39,12 +40,12 @@ def get_users(request: Request, item: int, db: Session = Depends(get_db)):
     return db_user
 
 
-@router.get("/test", response_class=HTMLResponse)
-def home(request: Request):
-    return 'good job!'
+@router.get("/test/{item}")
+def search_for_item(request: Request, item: str, db: Session = Depends(get_db)):
+    return db.query(models.Okpd).filter(models.Okpd.number.find(item) or models.Okpd.description.find(item)).all()
 
 
-@router.post("/createit")
+@router.post("/createit", tags=['НЕ ЗАПУСКАТЬ ЭТО ДЛЯ ОКПД БЫЛО'])
 def create_okpd(request: Request, db: Session = Depends(get_db)):
     doc_result = docx2python('app/okpd.docx')
     for el in doc_result.body:
