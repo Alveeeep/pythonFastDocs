@@ -52,8 +52,13 @@ def get_users(request: Request, item: int, db: Session = Depends(get_db)):
 
 @router.get("/test/{item}")
 def search_for_item(request: Request, item: str, db: Session = Depends(get_db)):
-    return db.query(models.Okpd).filter(
+    res = []
+    okpd = db.query(models.Okpd).filter(
         or_(models.Okpd.number.like(item + '%'), models.Okpd.description.like(item.capitalize() + '%'))).all()
+    for el in okpd:
+        ogr = db.query(models.Limits).filter(models.Limits.numbers.like(el.number + '%')).first()
+        res.append({"id": el.id, "number": el.number, "description": el.description, "limits": ogr['name'], "exceptions": ogr['exceptions']})
+    return res
 
 
 @router.post("/createit", tags=['НЕ ЗАПУСКАТЬ ЭТО ДЛЯ ОКПД БЫЛО'])
