@@ -6,6 +6,7 @@ from app.database.database import get_db
 from sqlalchemy.orm import Session
 from app.database import crud
 from app.database import models
+from sqlalchemy import or_
 
 from docx2python import docx2python
 
@@ -42,7 +43,8 @@ def get_users(request: Request, item: int, db: Session = Depends(get_db)):
 
 @router.get("/test/{item}")
 def search_for_item(request: Request, item: str, db: Session = Depends(get_db)):
-    return db.query(models.Okpd).filter(models.Okpd.number.find(item) or models.Okpd.description.find(item)).all()
+    return db.query(models.Okpd).filter(
+        or_(models.Okpd.number.like(item + '%'), models.Okpd.description.like(item.capitalize() + '%'))).all()
 
 
 @router.post("/createit", tags=['НЕ ЗАПУСКАТЬ ЭТО ДЛЯ ОКПД БЫЛО'])
