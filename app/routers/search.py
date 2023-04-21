@@ -55,10 +55,22 @@ def search_for_item(request: Request, item: str, db: Session = Depends(get_db)):
     res = []
     okpd = db.query(models.Okpd).filter(
         or_(models.Okpd.number.like(item + '%'), models.Okpd.description.like(item.capitalize() + '%'))).all()
+    print('!!OKPD^:', okpd)
     for el in okpd:
-        ogr = db.query(models.Limits).filter(models.Limits.numbers.like(el.number + '%')).first()
-        res.append({"id": el.id, "number": el.number, "description": el.description, "limits": ogr['name'], "exceptions": ogr['exceptions']})
+        if '.' in el.number:
+            num = el.number.split('.')
+            for i in range(len(num) - 1, 0, -1):
+                new_num = ''.join(num[0:i])
+                ogr = db.query(models.Limits).filter(models.Limits.numbers.like(new_num + '%')).first()
+                if ogr:
+                    res.append({"id": el.id, "number": el.number, "description": el.description, "limits": ogr.name,
+                                "exceptions": ogr.exceptions})
+        else:
+            ogr = db.query(models.Limits).filter(models.Limits.numbers.like(el.number + '%')).first()
+            res.append({"id": el.id, "number": el.number, "description": el.description, "limits": ogr.name,
+                        "exceptions": ogr.exceptions})
     return res
+# Нужно чтобы проверялось на 01 (самый родительский номер)
 
 
 @router.post("/createit", tags=['НЕ ЗАПУСКАТЬ ЭТО ДЛЯ ОКПД БЫЛО'])
