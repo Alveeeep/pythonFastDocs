@@ -6,7 +6,7 @@ from app.database.database import get_db
 from sqlalchemy.orm import Session
 from app.database import crud
 from app.database import models
-from sqlalchemy import or_
+from app.crud import get_all
 
 from docx2python import docx2python
 
@@ -52,30 +52,7 @@ def get_users(request: Request, item: int, db: Session = Depends(get_db)):
 
 @router.get("/test/{item}")
 def search_for_item(request: Request, item: str, db: Session = Depends(get_db)):
-    res = []
-    okpd = db.query(models.Okpd).order_by(models.Okpd.number).filter(
-        or_(models.Okpd.number.like(item + '%'), models.Okpd.description.like(item.capitalize() + '%'))).all()
-    print('!!OKPD^:', okpd)
-    for el in okpd:
-        if '.' in el.number:
-            num = el.number.split('.')
-            for i in range(len(num) - 1, 0, -1):
-                new_num = ''.join(num[0:i])
-                ogr = db.query(models.Limits).order_by(models.Limits.numbers).filter(
-                    models.Limits.numbers.like(new_num + '%')).all()
-                if ogr:
-                    res.append({"id": el.id, "number": el.number, "description": el.description,
-                                "limits": list(set((i.name for i in ogr))),
-                                "exceptions": list(set((i.exceptions for i in ogr)))})
-        else:
-            ogr = db.query(models.Limits).order_by(models.Limits.numbers).filter(
-                models.Limits.numbers == el.number).all()
-            res.append(
-                {"id": el.id, "number": el.number, "description": el.description,
-                 "limits": [i.name for i in ogr],
-                 "exceptions": [i.exceptions for i in ogr]})
-    print(res[0])
-    return res
+    return get_all(db, item)
 
 
 # Нужно чтобы проверялось на 01 (самый родительский номер)
@@ -120,9 +97,9 @@ def create_zapret(request: Request, db: Session = Depends(get_db)):
              "63.11.12", "63.11.19", "58.29.14", "58.29.21", "58.29.29", "58.29.21", "58.29.29", "69", "71.12",
              "70.22.2", "18", "70.22", "26.5"]
     for el in codes:
-        db_ogr = models.Limits(numbers=el,
-                               name="Постановление Правительства Российской Федерации от 16.11.2015 № 1236 «Об установлении запрета на допуск программного обеспечения, происходящего из иностранных государств, для целей осуществления закупок для обеспечения государственных и муниципальных нужд»",
-                               exceptions=None)
+        db_ogr = models.Prohibitions(numbers=el,
+                                     name="Постановление Правительства Российской Федерации от 16.11.2015 № 1236 «Об установлении запрета на допуск программного обеспечения, происходящего из иностранных государств, для целей осуществления закупок для обеспечения государственных и муниципальных нужд»",
+                                     exceptions=None)
         db.add(db_ogr)
         db.commit()
         db.refresh(db_ogr)

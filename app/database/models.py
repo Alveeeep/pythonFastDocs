@@ -24,3 +24,4 @@ class Prohibitions(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String)
     numbers = Column(TEXT)
+    exceptions = Column(TEXT)
