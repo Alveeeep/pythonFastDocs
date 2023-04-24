@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 from .database import models
-from sqlalchemy import or_
+from sqlalchemy import or_, and_
 
 models_dict = [models.Limits, models.Prohibitions]
 
@@ -38,19 +38,19 @@ def get_prohibitions(item, db: Session):
         for i in range(len(number), 0, -1):
             num = '.'.join(number[0: i])
             prohbs = db.query(models.Prohibitions).order_by(models.Prohibitions.numbers).filter(
-                models.Prohibitions.numbers.like(num)).all()
+                models.Prohibitions.numbers.startswith(num)).first()
             if prohbs:
-                for el in prohbs:
-                    if dic['name'] != el.name:
-                        dic['name'].append(el.name)
-                    if dic['exceptions'] != el.exceptions:
-                        dic['exceptions'].append(el.exceptions)
+               # for el in prohbs:
+                    if prohbs.name not in dic['name']:
+                        dic['name'].append(prohbs.name)
+                    if prohbs.exceptions not in dic['exceptions']:
+                        dic['exceptions'].append(prohbs.exceptions)
     else:
         prohbs = db.query(models.Prohibitions).order_by(models.Prohibitions.numbers).filter(
             models.Prohibitions.numbers == item).all()
         if prohbs:
             for el in prohbs:
-                if dic['name'] != el.name:
+                if el.name not in dic['name']:
                     dic['name'].append(el.name)
                 if dic['exceptions'] != el.exceptions:
                     dic['exceptions'].append(el.exceptions)
