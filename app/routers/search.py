@@ -53,7 +53,7 @@ def get_users(request: Request, item: int, db: Session = Depends(get_db)):
 @router.get("/test/{item}")
 def search_for_item(request: Request, item: str, db: Session = Depends(get_db)):
     res = []
-    okpd = db.query(models.Okpd).filter(
+    okpd = db.query(models.Okpd).order_by(models.Okpd.number).filter(
         or_(models.Okpd.number.like(item + '%'), models.Okpd.description.like(item.capitalize() + '%'))).all()
     print('!!OKPD^:', okpd)
     for el in okpd:
@@ -61,15 +61,23 @@ def search_for_item(request: Request, item: str, db: Session = Depends(get_db)):
             num = el.number.split('.')
             for i in range(len(num) - 1, 0, -1):
                 new_num = ''.join(num[0:i])
-                ogr = db.query(models.Limits).filter(models.Limits.numbers.like(new_num + '%')).first()
+                ogr = db.query(models.Limits).order_by(models.Limits.numbers).filter(
+                    models.Limits.numbers.like(new_num + '%')).all()
                 if ogr:
-                    res.append({"id": el.id, "number": el.number, "description": el.description, "limits": ogr.name,
-                                "exceptions": ogr.exceptions})
+                    res.append({"id": el.id, "number": el.number, "description": el.description,
+                                "limits": list(set((i.name for i in ogr))),
+                                "exceptions": list(set((i.exceptions for i in ogr)))})
         else:
-            ogr = db.query(models.Limits).filter(models.Limits.numbers.like(el.number + '%')).first()
-            res.append({"id": el.id, "number": el.number, "description": el.description, "limits": ogr.name,
-                        "exceptions": ogr.exceptions})
+            ogr = db.query(models.Limits).order_by(models.Limits.numbers).filter(
+                models.Limits.numbers == el.number).all()
+            res.append(
+                {"id": el.id, "number": el.number, "description": el.description,
+                 "limits": [i.name for i in ogr],
+                 "exceptions": [i.exceptions for i in ogr]})
+    print(res[0])
     return res
+
+
 # Нужно чтобы проверялось на 01 (самый родительский номер)
 
 
@@ -103,4 +111,19 @@ def create_ogr(request: Request, db: Session = Depends(get_db)):
             db.add(db_ogr)
             db.commit()
             db.refresh(db_ogr)
+    return 'надеюсь норм'
+
+
+@router.post("/zapret", tags=['НЕ ЗАПУСКАТЬ ЭТО ДЛЯ ОКПД БЫЛО'])
+def create_zapret(request: Request, db: Session = Depends(get_db)):
+    codes = ["62", "58.29.11", "63.11", "61.10.3", "61.10.4", "61.20.3", "61.20.4", "61.90.10", "58.29.13", "58.29.12",
+             "63.11.12", "63.11.19", "58.29.14", "58.29.21", "58.29.29", "58.29.21", "58.29.29", "69", "71.12",
+             "70.22.2", "18", "70.22", "26.5"]
+    for el in codes:
+        db_ogr = models.Limits(numbers=el,
+                               name="Постановление Правительства Российской Федерации от 16.11.2015 № 1236 «Об установлении запрета на допуск программного обеспечения, происходящего из иностранных государств, для целей осуществления закупок для обеспечения государственных и муниципальных нужд»",
+                               exceptions=None)
+        db.add(db_ogr)
+        db.commit()
+        db.refresh(db_ogr)
     return 'надеюсь норм'
