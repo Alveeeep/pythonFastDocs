@@ -38,7 +38,7 @@ def get_prohibitions(item, db: Session):
         for i in range(len(number), 0, -1):
             num = '.'.join(number[0: i])
             prohbs = db.query(models.Prohibitions).order_by(models.Prohibitions.numbers).filter(
-                models.Prohibitions.numbers == num).all()
+                models.Prohibitions.numbers.like(num)).all()
             if prohbs:
                 for el in prohbs:
                     if dic['name'] != el.name:
@@ -59,9 +59,10 @@ def get_prohibitions(item, db: Session):
 
 def get_all(db: Session, item: str):
     res = []
-    okpd = db.query(models.Okpd).filter(
+    okpd = db.query(models.Okpd).order_by(models.Okpd.number).filter(
         or_(models.Okpd.number.like(item + '%'), models.Okpd.description.like(item.capitalize() + '%'))).all()
     for ok in okpd:
-        res.append({'id': ok.id, 'number': ok.number, 'description': ok.description, 'limits': get_limits(ok.number, db),
-                    'prohibitions': get_prohibitions(ok.number, db)})
+        res.append(
+            {'id': ok.id, 'number': ok.number, 'description': ok.description, 'limits': get_limits(ok.number, db),
+             'prohibitions': get_prohibitions(ok.number, db)})
     return res
