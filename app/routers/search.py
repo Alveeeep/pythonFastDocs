@@ -73,21 +73,17 @@ def create_okpd(request: Request, db: Session = Depends(get_db)):
 
 @router.post("/ogranicheniya", tags=['НЕ ЗАПУСКАТЬ ЭТО ДЛЯ ОКПД БЫЛО'])
 def create_ogr(request: Request, db: Session = Depends(get_db)):
-    doc_result = docx2python('app/ogranicheniya471.docx')
-    for el in doc_result.body:
-        for i in el:
-            if '*' in i[0][0]:
-                number = i[0][0].split('*')
-                db_ogr = models.Limits(numbers=number[0],
-                                       name='Распоряжение Правительства РФ от 21 марта 2016 г. № 471-р',
-                                       exceptions=eto_vremenno[number[1]])
-            else:
-                db_ogr = models.Limits(numbers=i[0][0],
-                                       name='Распоряжение Правительства РФ от 21 марта 2016 г. № 471-р',
-                                       exceptions=None)
-            db.add(db_ogr)
-            db.commit()
-            db.refresh(db_ogr)
+    with open('app/617.txt', 'r', encoding='utf-8') as f:
+        data = f.readlines()
+        for el in data:
+            print(el)
+            if '.' in el:
+                db_ogr = models.Limits(numbers=el,
+                                   name='Постановление Правительства РФ от 30 апреля 2020 г. N 617',
+                                   exceptions=None)
+                db.add(db_ogr)
+                db.commit()
+                db.refresh(db_ogr)
     return 'надеюсь норм'
 
 
