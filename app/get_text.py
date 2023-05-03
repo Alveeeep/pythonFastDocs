@@ -13,8 +13,6 @@
 #    for i in el:
 #        print(i)
 item = '28.93.2'
-print(item[:-2])
-number = item.split('.')
-for i in range(len(number), 0, -1):
-    num = '.'.join(number[0: i])
+for i in range(len(item), 0, -1):
+    num = item[0: i]
     print(num)

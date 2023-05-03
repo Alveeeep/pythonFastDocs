@@ -8,9 +8,8 @@ models_dict = [models.Limits, models.Prohibitions]
 def get_limits(item, db: Session):
     dic = {'name': [], "exceptions": []}
     if '.' in item:
-        number = item.split('.')
-        for i in range(len(number), 0, -1):
-            num = '.'.join(number[0: i])
+        for i in range(len(item), 0, -1):
+            num = item[0: i]
             limits = db.query(models.Limits).order_by(models.Limits.numbers).filter(
                 models.Limits.numbers == num).all()
             if limits:
