@@ -15,7 +15,7 @@ class Limits(Base):
     __tablename__ = "Limits"
     id = Column(Integer, primary_key=True)
     name = Column(String)
-    numbers = Column(TEXT)
+    numbers = Column(String)
     exceptions = Column(TEXT)
 
 

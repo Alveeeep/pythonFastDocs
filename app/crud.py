@@ -15,18 +15,18 @@ def get_limits(item, db: Session):
                 models.Limits.numbers == num).all()
             if limits:
                 for el in limits:
-                    if dic['name'] != el.name:
+                    if el.name not in dic['name']:
                         dic['name'].append(el.name)
-                    if dic['exceptions'] != el.exceptions:
+                    if el.exceptions not in dic['exceptions']:
                         dic['exceptions'].append(el.exceptions)
     else:
         limits = db.query(models.Limits).order_by(models.Limits.numbers).filter(
             models.Limits.numbers == item).all()
         if limits:
             for el in limits:
-                if dic['name'] != el.name:
+                if el.name not in dic['name']:
                     dic['name'].append(el.name)
-                if dic['exceptions'] != el.exceptions:
+                if el.exceptions not in dic['exceptions']:
                     dic['exceptions'].append(el.exceptions)
     return dic
 
