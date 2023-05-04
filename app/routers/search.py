@@ -64,8 +64,8 @@ def create_okpd(request: Request, db: Session = Depends(get_db)):
     for el in data:
         el.numbers = el.numbers[:-2]
         db.commit()
-    #doc_result = docx2python('app/okpd.docx')
-    #for el in doc_result.body:
+    # doc_result = docx2python('app/okpd.docx')
+    # for el in doc_result.body:
     #    for i in el:
     #        if i[0][0] != '' and 'Раздел ' not in i[0][0]:
     #            db_okpd = models.Okpd(number=i[0][0], description=i[1][0])
@@ -77,16 +77,27 @@ def create_okpd(request: Request, db: Session = Depends(get_db)):
 
 @router.post("/ogranicheniya", tags=['НЕ ЗАПУСКАТЬ ЭТО ДЛЯ ОКПД БЫЛО'])
 def create_ogr(request: Request, db: Session = Depends(get_db)):
-    with open('app/617.txt', 'r', encoding='utf-8') as f:
-        data = f.readlines()
-        for el in data:
-            if '.' in el:
-                db_ogr = models.Limits(numbers=el.rstrip(),
-                                   name='Постановление Правительства РФ от 30 апреля 2020 г. N 617',
-                                   exceptions=None)
-                db.add(db_ogr)
-                db.commit()
-                db.refresh(db_ogr)
+    codes = ["13.20.44.120", "14.12.11", "14.12.21", "14.12.30.131", "14.12.30.132", "14.12.30.160", "14.12.30.170",
+             "14.19.32.120", "17.22.12.130", "20.13.13.110",
+             "20.20.14.000", "20.59.52.140", "20.59.52.199", "21.10.60.196", "20.59.52.199", "21.20.10.139",
+             "20.59.52.199", "21.20.23.111", "21.10.60.196",
+             "21.10.60.196", "21.20.23.111", "21.20.23.110", "21.20.23.111", "21.20.24.110", "21.20.24.131",
+             "21.20.24.150", "21.20.24.160", "22.19.71.190",
+             "22.22.14.000", "26.60.12.119", "26.70.22.150", "26.60.12.132", "26.60.13.130", "26.60.13.190",
+             "26.60.13.130", "26.60.13.170", "26.60.13.190",
+             "26.60.14.120", "30.92.2", "32.50.11.000", "32.50.13.110", "32.50.13.120", "32.50.13.190", "32.50.21.112",
+             "32.50.22.110", "32.50.22.190", "32.50.22.120", "32.50.22.127", "32.50.22.128", "32.50.22.129",
+             "32.50.22.152", "32.50.22.190", "32.50.23.000",
+             "32.50.30.110", "32.99.21.120", "32.50.50.000", "32.50.50.190", "32.50.50.180", "32.50.13.150",
+             "32.50.21.120", "32.50.21.121",
+             "32.50.21.122", "32.50.21.123", "32.50.21.129", "21.20.23.199", "32.50.50.141"]
+    for el in codes:
+        db_ogr = models.Limits(numbers=el,
+                               name="Постановление Правительства РФ от 5 февраля 2015 г. N 102",
+                               exceptions=None)
+        db.add(db_ogr)
+        db.commit()
+        db.refresh(db_ogr)
     return 'надеюсь норм'
 
 
