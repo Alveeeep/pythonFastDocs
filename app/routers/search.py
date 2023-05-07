@@ -82,7 +82,7 @@ def create_ogr(request: Request, db: Session = Depends(get_db)):
         for el in data:
             if el.count('.') >= 2:
                 db_ogr = models.Limits(numbers=el.rstrip(),
-                                       name='Распоряжение Правительства РФ от 08.12.2021 № 3500-р (Преимущества организациям инвалидов)',
+                                       name='Распоряжение Правительства РФ от 08.12.2021 № 3500-р (Преимущества организациям уголовно-исполнительной системы)',
                                        exceptions=None)
                 db.add(db_ogr)
                 db.commit()
