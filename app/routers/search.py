@@ -77,12 +77,12 @@ def create_okpd(request: Request, db: Session = Depends(get_db)):
 
 @router.post("/ogranicheniya", tags=['НЕ ЗАПУСКАТЬ ЭТО ДЛЯ ОКПД БЫЛО'])
 def create_ogr(request: Request, db: Session = Depends(get_db)):
-    with open('app/3500(1).txt', 'r', encoding='utf-8') as f:
+    with open('app/3500(2).txt', 'r', encoding='utf-8') as f:
         data = f.readlines()
         for el in data:
             if el.count('.') >= 2:
                 db_ogr = models.Limits(numbers=el.rstrip(),
-                                       name='Распоряжение Правительства РФ от 08.12.2021 № 3500-р (Преимущества организациям уголовно-исполнительной системы)',
+                                       name='Распоряжение Правительства РФ от 08.12.2021 № 3500-р (Преимущества организациям инвалидов)',
                                        exceptions=None)
                 db.add(db_ogr)
                 db.commit()
