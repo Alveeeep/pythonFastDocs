@@ -77,13 +77,14 @@ def create_okpd(request: Request, db: Session = Depends(get_db)):
 
 @router.post("/ogranicheniya", tags=['НЕ ЗАПУСКАТЬ ЭТО ДЛЯ ОКПД БЫЛО'])
 def create_ogr(request: Request, db: Session = Depends(get_db)):
-    with open('app/1292.txt', 'r', encoding='utf-8') as f:
+    with open('app/2014.txt', 'r', encoding='utf-8') as f:
         data = f.readlines()
         for el in data:
-            if el.count('.') >= 2:
-                db_ogr = models.Limits(numbers=el.rstrip(),
-                                       name='Постановление Правительства РФ от 26 декабря 2013 г. N 1292',
-                                       exceptions=None)
+            if el.count('.') >= 1:
+                el = el.split('_')
+                db_ogr = models.Limits(numbers=el[0].rstrip(),
+                                       name='Постановление Правительства РФ от 3 декабря 2020 г. N 2014',
+                                       exceptions=el[1].rstrip())
                 db.add(db_ogr)
                 db.commit()
                 db.refresh(db_ogr)
