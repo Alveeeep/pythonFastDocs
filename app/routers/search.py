@@ -60,18 +60,18 @@ def search_for_item(request: Request, item: str, db: Session = Depends(get_db)):
 
 @router.post("/createit", tags=['НЕ ЗАПУСКАТЬ ЭТО ДЛЯ ОКПД БЫЛО'])
 def create_okpd(request: Request, db: Session = Depends(get_db)):
-    data = db.query(models.Limits).filter(models.Limits.numbers.endswith('\n')).all()
-    for el in data:
-        el.numbers = el.numbers[:-2]
-        db.commit()
-    # doc_result = docx2python('app/okpd.docx')
-    # for el in doc_result.body:
-    #    for i in el:
-    #        if i[0][0] != '' and 'Раздел ' not in i[0][0]:
-    #            db_okpd = models.Okpd(number=i[0][0], description=i[1][0])
-    #            db.add(db_okpd)
-    #            db.commit()
-    #            db.refresh(db_okpd)
+    #data = db.query(models.Limits).filter(models.Limits.numbers.endswith('\n')).all()
+    #for el in data:
+    #    el.numbers = el.numbers[:-2]
+    #    db.commit()
+    doc_result = docx2python('app/okpd.docx')
+    for el in doc_result.body:
+       for i in el:
+           if i[0][0] != '' and 'Раздел ' not in i[0][0]:
+               db_okpd = models.Okpd(number=i[0][0], description=i[1][0])
+               db.add(db_okpd)
+               db.commit()
+               db.refresh(db_okpd)
     return 'надеюсь норм'
 
 
