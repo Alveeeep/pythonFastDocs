@@ -185,9 +185,9 @@ def create_ogr3500_1(request: Request, db: Session = Depends(get_db)):
                 db_ogr = models.Limits(numbers=el.rstrip(),
                                        name='Распоряжение Правительства РФ от 08.12.2021 № 3500-р (Преимущества организациям уголовно-исполнительной системы)',
                                        exceptions=None)
-            db.add(db_ogr)
-            db.commit()
-            db.refresh(db_ogr)
+                db.add(db_ogr)
+                db.commit()
+                db.refresh(db_ogr)
     return 'надеюсь норм'
 
 
@@ -200,9 +200,9 @@ def create_ogr3500_2(request: Request, db: Session = Depends(get_db)):
                 db_ogr = models.Limits(numbers=el.rstrip(),
                                        name='Распоряжение Правительства РФ от 08.12.2021 № 3500-р (Преимущества организациям инвалидов)',
                                        exceptions=None)
-            db.add(db_ogr)
-            db.commit()
-            db.refresh(db_ogr)
+                db.add(db_ogr)
+                db.commit()
+                db.refresh(db_ogr)
     return 'надеюсь норм'
 
 

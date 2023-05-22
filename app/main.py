@@ -3,7 +3,6 @@ from .routers import search
 from fastapi.middleware.cors import CORSMiddleware
 from app.database.models import Base
 from app.database.database import engine
-import uvicorn
 
 
 app = FastAPI()
