@@ -6,7 +6,8 @@ models_dict = [models.Limits, models.Prohibitions]
 
 
 def get_limits(item, db: Session):
-    dic = {'name': [], "exceptions": []}
+    dic = []
+    keys = []
     if '.' in item:
         for i in range(len(item), 0, -1):
             num = item[0: i]
@@ -14,24 +15,39 @@ def get_limits(item, db: Session):
                 models.Limits.numbers == num).all()
             if limits:
                 for el in limits:
-                    if el.name not in dic['name']:
-                        dic['name'].append(el.name)
-                    if el.exceptions not in dic['exceptions']:
-                        dic['exceptions'].append(el.exceptions)
+                    res = {'name': '', "exceptions": []}
+                    if el.name not in keys:
+                        keys.append(el.name)
+                        res['name'] = el.name
+                        res['exceptions'].append(el.exceptions)
+                        dic.append(res)
+                    else:
+                        for i in dic:
+                            if i['name'] == el.name:
+                                i['exceptions'].append(el.exceptions)
+                                continue
     else:
         limits = db.query(models.Limits).order_by(models.Limits.numbers).filter(
             models.Limits.numbers == item).all()
         if limits:
             for el in limits:
-                if el.name not in dic['name']:
-                    dic['name'].append(el.name)
-                if el.exceptions not in dic['exceptions']:
-                    dic['exceptions'].append(el.exceptions)
+                res = {'name': '', "exceptions": []}
+                if el.name not in keys:
+                    keys.append(el.name)
+                    res['name'] = el.name
+                    res['exceptions'].append(el.exceptions)
+                    dic.append(res)
+                else:
+                    for i in dic:
+                        if i['name'] == el.name:
+                            i['exceptions'].append(el.exceptions)
+                            continue
     return dic
 
 
 def get_prohibitions(item, db: Session):
-    dic = {'name': [], "exceptions": []}
+    dic = []
+    keys = []
     if '.' in item:
         for i in range(len(item), 0, -1):
             num = item[0: i]
@@ -39,19 +55,33 @@ def get_prohibitions(item, db: Session):
                 models.Prohibitions.numbers == num).all()
             if prohbs:
                 for el in prohbs:
-                    if el.name not in dic['name']:
-                        dic['name'].append(el.name)
-                    if el.exceptions not in dic['exceptions']:
-                        dic['exceptions'].append(el.exceptions)
+                    res = {'name': '', "exceptions": []}
+                    if el.name not in keys:
+                        keys.append(el.name)
+                        res['name'] = el.name
+                        res['exceptions'].append(el.exceptions)
+                        dic.append(res)
+                    else:
+                        for i in dic:
+                            if i['name'] == el.name:
+                                i['exceptions'].append(el.exceptions)
+                                continue
     else:
         prohbs = db.query(models.Prohibitions).order_by(models.Prohibitions.numbers).filter(
             models.Prohibitions.numbers == item).all()
         if prohbs:
             for el in prohbs:
-                if el.name not in dic['name']:
-                    dic['name'].append(el.name)
-                if el.exceptions not in dic['exceptions']:
-                    dic['exceptions'].append(el.exceptions)
+                res = {'name': '', "exceptions": []}
+                if el.name not in keys:
+                    keys.append(el.name)
+                    res['name'] = el.name
+                    res['exceptions'].append(el.exceptions)
+                    dic.append(res)
+                else:
+                    for i in dic:
+                        if i['name'] == el.name:
+                            i['exceptions'].append(el.exceptions)
+                            continue
     return dic
 
 
