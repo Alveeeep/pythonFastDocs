@@ -1,5 +1,5 @@
 from fastapi import FastAPI, Request
-from .routers import search
+from app.routers import search
 from fastapi.middleware.cors import CORSMiddleware
 from app.database.models import Base
 from app.database.database import engine
