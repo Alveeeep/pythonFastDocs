@@ -75,8 +75,8 @@ def create_okpd(request: Request, db: Session = Depends(get_db)):
     return 'надеюсь норм'
 
 
-@router.post("/ogranicheniya", tags=['НЕ ЗАПУСКАТЬ ЭТО ДЛЯ ОКПД БЫЛО'])
-def create_ogr(request: Request, db: Session = Depends(get_db)):
+@router.post("/ogranicheniya2014", tags=['НЕ ЗАПУСКАТЬ ЭТО ДЛЯ ОКПД БЫЛО'])
+def create_ogr2014(request: Request, db: Session = Depends(get_db)):
     with open('app/2014.txt', 'r', encoding='utf-8') as f:
         data = f.readlines()
         for el in data:
@@ -88,6 +88,176 @@ def create_ogr(request: Request, db: Session = Depends(get_db)):
                 db.add(db_ogr)
                 db.commit()
                 db.refresh(db_ogr)
+    return 'надеюсь норм'
+
+
+@router.post("/ogranicheniya471", tags=['НЕ ЗАПУСКАТЬ ЭТО ДЛЯ ОКПД БЫЛО'])
+def create_ogr471(request: Request, db: Session = Depends(get_db)):
+    doc_result = docx2python('app/ogranicheniya471.docx')
+    for el in doc_result.body:
+        for i in el:
+            if '*' in i[0][0]:
+                number = i[0][0].split('*')
+                db_ogr = models.Limits(numbers=number[0],
+                                       name='Распоряжение Правительства РФ от 21 марта 2016 г. № 471-р',
+                                       exceptions=eto_vremenno[number[1]])
+            else:
+                db_ogr = models.Limits(numbers=i[0][0],
+                                       name='Распоряжение Правительства РФ от 21 марта 2016 г. № 471-р',
+                                       exceptions=None)
+            db.add(db_ogr)
+            db.commit()
+            db.refresh(db_ogr)
+    return 'надеюсь норм'
+
+
+@router.post("/ogranicheniya617", tags=['НЕ ЗАПУСКАТЬ ЭТО ДЛЯ ОКПД БЫЛО'])
+def create_ogr617(request: Request, db: Session = Depends(get_db)):
+    with open('app/617.txt', 'r', encoding='utf-8') as f:
+        data = f.readlines()
+        for el in data:
+            print(el)
+            if '.' in el:
+                db_ogr = models.Limits(numbers=el.rstrip(),
+                                       name='Постановление Правительства РФ от 30 апреля 2020 г. N 617',
+                                       exceptions=None)
+                db.add(db_ogr)
+                db.commit()
+                db.refresh(db_ogr)
+    return 'надеюсь норм'
+
+
+@router.post("/ogranicheniya832", tags=['НЕ ЗАПУСКАТЬ ЭТО ДЛЯ ОКПД БЫЛО'])
+def create_ogr832(request: Request, db: Session = Depends(get_db)):
+    with open('app/832.txt', 'r', encoding='utf-8') as f:
+        data = f.readlines()
+        for el in data:
+            if el.count('.') >= 2:
+                db_ogr = models.Limits(numbers=el.rstrip(),
+                                       name='Постановление Правительства РФ от 22 августа 2016 г. N 832',
+                                       exceptions=None)
+                db.add(db_ogr)
+                db.commit()
+                db.refresh(db_ogr)
+    return 'надеюсь норм'
+
+
+@router.post("/ogranicheniya878", tags=['НЕ ЗАПУСКАТЬ ЭТО ДЛЯ ОКПД БЫЛО'])
+def create_ogr878(request: Request, db: Session = Depends(get_db)):
+    with open('app/878.txt', 'r', encoding='utf-8') as f:
+        data = f.readlines()
+        for el in data:
+            if el.count('.') >= 2:
+                db_ogr = models.Limits(numbers=el.rstrip(),
+                                       name='Постановление Правительства РФ от 10 июля 2019 г. N 878',
+                                       exceptions=None)
+                db.add(db_ogr)
+                db.commit()
+                db.refresh(db_ogr)
+    return 'надеюсь норм'
+
+
+@router.post("/ogranicheniya126", tags=['НЕ ЗАПУСКАТЬ ЭТО ДЛЯ ОКПД БЫЛО'])
+def create_ogr126(request: Request, db: Session = Depends(get_db)):
+    with open('app/126.txt', 'r', encoding='utf-8') as f:
+        data = f.readlines()
+        for el in data:
+            if 'За исключением' in el:
+                db_ogr = models.Limits(numbers=el.rstrip(),
+                                    name='Приказ Минфина России от 4 июня 2018 г. N 126н',
+                                    exceptions=el[el.index('За'):])
+            else:
+                db_ogr = models.Limits(numbers=el.rstrip(),
+                                       name='Приказ Минфина России от 4 июня 2018 г. N 126н',
+                                       exceptions=None)
+            db.add(db_ogr)
+            db.commit()
+            db.refresh(db_ogr)
+    return 'надеюсь норм'
+
+
+@router.post("/ogranicheniya3500_1", tags=['НЕ ЗАПУСКАТЬ ЭТО ДЛЯ ОКПД БЫЛО'])
+def create_ogr3500_1(request: Request, db: Session = Depends(get_db)):
+    with open('app/3500(1).txt', 'r', encoding='utf-8') as f:
+        data = f.readlines()
+        for el in data:
+            if el.count('.') >= 2:
+                db_ogr = models.Limits(numbers=el.rstrip(),
+                                       name='Распоряжение Правительства РФ от 08.12.2021 № 3500-р (Преимущества организациям уголовно-исполнительной системы)',
+                                       exceptions=None)
+            db.add(db_ogr)
+            db.commit()
+            db.refresh(db_ogr)
+    return 'надеюсь норм'
+
+
+@router.post("/ogranicheniya3500_2", tags=['НЕ ЗАПУСКАТЬ ЭТО ДЛЯ ОКПД БЫЛО'])
+def create_ogr3500_2(request: Request, db: Session = Depends(get_db)):
+    with open('app/3500(2).txt', 'r', encoding='utf-8') as f:
+        data = f.readlines()
+        for el in data:
+            if el.count('.') >= 2:
+                db_ogr = models.Limits(numbers=el.rstrip(),
+                                       name='Распоряжение Правительства РФ от 08.12.2021 № 3500-р (Преимущества организациям инвалидов)',
+                                       exceptions=None)
+            db.add(db_ogr)
+            db.commit()
+            db.refresh(db_ogr)
+    return 'надеюсь норм'
+
+
+@router.post("/ogranicheniya1152", tags=['НЕ ЗАПУСКАТЬ ЭТО ДЛЯ ОКПД БЫЛО'])
+def create_ogr1152(request: Request, db: Session = Depends(get_db)):
+    with open('app/1152.txt', 'r', encoding='utf-8') as f:
+        data = f.readlines()
+        for el in data:
+            db_ogr = models.Limits(numbers=el[:el.index('За')],
+                                   name='Приказ Министерства промышленности и торговли Российской Федерации от 07.04.2020 № 1152',
+                                   exceptions=el[el.index('За'):])
+            db.add(db_ogr)
+            db.commit()
+            db.refresh(db_ogr)
+    return 'надеюсь норм'
+
+
+@router.post("/ogranicheniya1292", tags=['НЕ ЗАПУСКАТЬ ЭТО ДЛЯ ОКПД БЫЛО'])
+def create_ogr1292(request: Request, db: Session = Depends(get_db)):
+    with open('app/1152.txt', 'r', encoding='utf-8') as f:
+        data = f.readlines()
+        for el in data:
+            if el.count('.') >= 2:
+                db_ogr = models.Limits(numbers=el.rstrip(),
+                                       name='Постановление Правительства РФ от 26 декабря 2013 г. N 1292',
+                                       exceptions=None)
+                db.add(db_ogr)
+                db.commit()
+                db.refresh(db_ogr)
+    return 'надеюсь норм'
+
+
+@router.post("/ogranicheniya102", tags=['НЕ ЗАПУСКАТЬ ЭТО ДЛЯ ОКПД БЫЛО'])
+def create_ogr102(request: Request, db: Session = Depends(get_db)):
+    codes = ["13.20.44.120", "14.12.11", "14.12.21", "14.12.30.131", "14.12.30.132", "14.12.30.160", "14.12.30.170",
+             "14.19.32.120", "17.22.12.130", "20.13.13.110",
+             "20.20.14.000", "20.59.52.140", "20.59.52.199", "21.10.60.196", "20.59.52.199", "21.20.10.139",
+             "20.59.52.199", "21.20.23.111", "21.10.60.196",
+             "21.10.60.196", "21.20.23.111", "21.20.23.110", "21.20.23.111", "21.20.24.110", "21.20.24.131",
+             "21.20.24.150", "21.20.24.160", "22.19.71.190",
+             "22.22.14.000", "26.60.12.119", "26.70.22.150", "26.60.12.132", "26.60.13.130", "26.60.13.190",
+             "26.60.13.130", "26.60.13.170", "26.60.13.190",
+             "26.60.14.120", "30.92.2", "32.50.11.000", "32.50.13.110", "32.50.13.120", "32.50.13.190", "32.50.21.112",
+             "32.50.22.110", "32.50.22.190", "32.50.22.120", "32.50.22.127", "32.50.22.128", "32.50.22.129",
+             "32.50.22.152", "32.50.22.190", "32.50.23.000",
+             "32.50.30.110", "32.99.21.120", "32.50.50.000", "32.50.50.190", "32.50.50.180", "32.50.13.150",
+             "32.50.21.120", "32.50.21.121",
+             "32.50.21.122", "32.50.21.123", "32.50.21.129", "21.20.23.199", "32.50.50.141"]
+    for el in codes:
+        db_ogr = models.Limits(numbers=el.rstrip(),
+                               name="Постановление Правительства РФ от 5 февраля 2015 г. N 102",
+                               exceptions=None)
+        db.add(db_ogr)
+        db.commit()
+        db.refresh(db_ogr)
     return 'надеюсь норм'
 
 
