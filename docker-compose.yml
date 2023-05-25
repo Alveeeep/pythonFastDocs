@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  app-fastapi:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: uvicorn app.main:app --host 0.0.0.0
+    ports:
+      - "7331:8000"
+    volumes:
+      - .:/okpd_app
+    env_file:
+      - app/.env
+    environment:
+      - POSTGRES_HOST=service_name_of_db
+      - POSTGRES_DB=database_name
+      - POSTGRES_USER=db_user
+      - POSTGRES_PASSWORD=db_password
+    depends_on:
+      - db
+    restart: always
+    networks:
+      - practice
+
+  db:
+    image: "postgres"
+    environment:
+      - POSTGRES_HOST=pservice_name_of_db
+      - POSTGRES_DB=database_name
+      - POSTGRES_USER=db_user
+      - POSTGRES_PASSWORD=db_password
+    env_file:
+      - app/.env
+    restart: always
+    networks:
+      - practice
+
+networks:
+  practice:
