@@ -34,23 +34,7 @@ def home(request: Request):
     return templates.TemplateResponse("page.html", {"request": request, "data": data})
 
 
-@router.get("/page/{page_name}", response_class=HTMLResponse)
-def page(request: Request, page_name: str):
-    data = {
-        "page": page_name
-    }
-    return templates.TemplateResponse("page.html", {"request": request, "data": data})
-
-
-@router.get("/getsymb/{item}", response_class=HTMLResponse)
-def get_users(request: Request, item: int, db: Session = Depends(get_db)):
-    db_user = crud.get_user(db, user_id=item)
-    if db_user is None:
-        raise HTTPException(status_code=404, detail="User not found")
-    return db_user
-
-
-@router.get("/test/{item}")
+@router.get("/api/search/{item}")
 def search_for_item(request: Request, item: str, db: Session = Depends(get_db)):
     return get_all(db, item)
 
@@ -58,7 +42,7 @@ def search_for_item(request: Request, item: str, db: Session = Depends(get_db)):
 # Нужно чтобы проверялось на 01 (самый родительский номер)
 
 
-@router.post("/createit", tags=['НЕ ЗАПУСКАТЬ ЭТО ДЛЯ ОКПД БЫЛО'])
+@router.post("/api/createit", tags=['НЕ ЗАПУСКАТЬ ЭТО ДЛЯ ОКПД БЫЛО'])
 def create_okpd(request: Request, db: Session = Depends(get_db)):
     #data = db.query(models.Limits).filter(models.Limits.numbers.endswith('\n')).all()
     #for el in data:
@@ -75,7 +59,7 @@ def create_okpd(request: Request, db: Session = Depends(get_db)):
     return 'надеюсь норм'
 
 
-@router.post("/ogranicheniya2014", tags=['НЕ ЗАПУСКАТЬ ЭТО ДЛЯ ОКПД БЫЛО'])
+@router.post("/api/ogranicheniya2014", tags=['НЕ ЗАПУСКАТЬ ЭТО ДЛЯ ОКПД БЫЛО'])
 def create_ogr2014(request: Request, db: Session = Depends(get_db)):
     with open('app/2014.txt', 'r', encoding='utf-8') as f:
         data = f.readlines()
@@ -91,7 +75,7 @@ def create_ogr2014(request: Request, db: Session = Depends(get_db)):
     return 'надеюсь норм'
 
 
-@router.post("/ogranicheniya471", tags=['НЕ ЗАПУСКАТЬ ЭТО ДЛЯ ОКПД БЫЛО'])
+@router.post("/api/ogranicheniya471", tags=['НЕ ЗАПУСКАТЬ ЭТО ДЛЯ ОКПД БЫЛО'])
 def create_ogr471(request: Request, db: Session = Depends(get_db)):
     doc_result = docx2python('app/ogranicheniya471.docx')
     for el in doc_result.body:
@@ -111,7 +95,7 @@ def create_ogr471(request: Request, db: Session = Depends(get_db)):
     return 'надеюсь норм'
 
 
-@router.post("/ogranicheniya617", tags=['НЕ ЗАПУСКАТЬ ЭТО ДЛЯ ОКПД БЫЛО'])
+@router.post("/api/ogranicheniya617", tags=['НЕ ЗАПУСКАТЬ ЭТО ДЛЯ ОКПД БЫЛО'])
 def create_ogr617(request: Request, db: Session = Depends(get_db)):
     with open('app/617.txt', 'r', encoding='utf-8') as f:
         data = f.readlines()
@@ -127,7 +111,7 @@ def create_ogr617(request: Request, db: Session = Depends(get_db)):
     return 'надеюсь норм'
 
 
-@router.post("/ogranicheniya832", tags=['НЕ ЗАПУСКАТЬ ЭТО ДЛЯ ОКПД БЫЛО'])
+@router.post("/api/ogranicheniya832", tags=['НЕ ЗАПУСКАТЬ ЭТО ДЛЯ ОКПД БЫЛО'])
 def create_ogr832(request: Request, db: Session = Depends(get_db)):
     with open('app/832.txt', 'r', encoding='utf-8') as f:
         data = f.readlines()
@@ -142,7 +126,7 @@ def create_ogr832(request: Request, db: Session = Depends(get_db)):
     return 'надеюсь норм'
 
 
-@router.post("/ogranicheniya878", tags=['НЕ ЗАПУСКАТЬ ЭТО ДЛЯ ОКПД БЫЛО'])
+@router.post("/api/ogranicheniya878", tags=['НЕ ЗАПУСКАТЬ ЭТО ДЛЯ ОКПД БЫЛО'])
 def create_ogr878(request: Request, db: Session = Depends(get_db)):
     with open('app/878.txt', 'r', encoding='utf-8') as f:
         data = f.readlines()
@@ -157,7 +141,7 @@ def create_ogr878(request: Request, db: Session = Depends(get_db)):
     return 'надеюсь норм'
 
 
-@router.post("/ogranicheniya126", tags=['НЕ ЗАПУСКАТЬ ЭТО ДЛЯ ОКПД БЫЛО'])
+@router.post("/api/ogranicheniya126", tags=['НЕ ЗАПУСКАТЬ ЭТО ДЛЯ ОКПД БЫЛО'])
 def create_ogr126(request: Request, db: Session = Depends(get_db)):
     with open('app/126.txt', 'r', encoding='utf-8') as f:
         data = f.readlines()
@@ -176,7 +160,7 @@ def create_ogr126(request: Request, db: Session = Depends(get_db)):
     return 'надеюсь норм'
 
 
-@router.post("/ogranicheniya3500_1", tags=['НЕ ЗАПУСКАТЬ ЭТО ДЛЯ ОКПД БЫЛО'])
+@router.post("/api/ogranicheniya3500_1", tags=['НЕ ЗАПУСКАТЬ ЭТО ДЛЯ ОКПД БЫЛО'])
 def create_ogr3500_1(request: Request, db: Session = Depends(get_db)):
     with open('app/3500(1).txt', 'r', encoding='utf-8') as f:
         data = f.readlines()
@@ -191,7 +175,7 @@ def create_ogr3500_1(request: Request, db: Session = Depends(get_db)):
     return 'надеюсь норм'
 
 
-@router.post("/ogranicheniya3500_2", tags=['НЕ ЗАПУСКАТЬ ЭТО ДЛЯ ОКПД БЫЛО'])
+@router.post("/api/ogranicheniya3500_2", tags=['НЕ ЗАПУСКАТЬ ЭТО ДЛЯ ОКПД БЫЛО'])
 def create_ogr3500_2(request: Request, db: Session = Depends(get_db)):
     with open('app/3500(2).txt', 'r', encoding='utf-8') as f:
         data = f.readlines()
@@ -206,7 +190,7 @@ def create_ogr3500_2(request: Request, db: Session = Depends(get_db)):
     return 'надеюсь норм'
 
 
-@router.post("/ogranicheniya1152", tags=['НЕ ЗАПУСКАТЬ ЭТО ДЛЯ ОКПД БЫЛО'])
+@router.post("/api/ogranicheniya1152", tags=['НЕ ЗАПУСКАТЬ ЭТО ДЛЯ ОКПД БЫЛО'])
 def create_ogr1152(request: Request, db: Session = Depends(get_db)):
     with open('app/1152.txt', 'r', encoding='utf-8') as f:
         data = f.readlines()
@@ -220,7 +204,7 @@ def create_ogr1152(request: Request, db: Session = Depends(get_db)):
     return 'надеюсь норм'
 
 
-@router.post("/ogranicheniya1292", tags=['НЕ ЗАПУСКАТЬ ЭТО ДЛЯ ОКПД БЫЛО'])
+@router.post("/api/ogranicheniya1292", tags=['НЕ ЗАПУСКАТЬ ЭТО ДЛЯ ОКПД БЫЛО'])
 def create_ogr1292(request: Request, db: Session = Depends(get_db)):
     with open('app/1152.txt', 'r', encoding='utf-8') as f:
         data = f.readlines()
@@ -235,7 +219,7 @@ def create_ogr1292(request: Request, db: Session = Depends(get_db)):
     return 'надеюсь норм'
 
 
-@router.post("/ogranicheniya102", tags=['НЕ ЗАПУСКАТЬ ЭТО ДЛЯ ОКПД БЫЛО'])
+@router.post("/api/ogranicheniya102", tags=['НЕ ЗАПУСКАТЬ ЭТО ДЛЯ ОКПД БЫЛО'])
 def create_ogr102(request: Request, db: Session = Depends(get_db)):
     codes = ["13.20.44.120", "14.12.11", "14.12.21", "14.12.30.131", "14.12.30.132", "14.12.30.160", "14.12.30.170",
              "14.19.32.120", "17.22.12.130", "20.13.13.110",
@@ -261,7 +245,7 @@ def create_ogr102(request: Request, db: Session = Depends(get_db)):
     return 'надеюсь норм'
 
 
-@router.post("/zapret", tags=['НЕ ЗАПУСКАТЬ ЭТО ДЛЯ ОКПД БЫЛО'])
+@router.post("/api/zapret", tags=['НЕ ЗАПУСКАТЬ ЭТО ДЛЯ ОКПД БЫЛО'])
 def create_zapret(request: Request, db: Session = Depends(get_db)):
     codes = ["13.2", "13.9", "14.1", "14.20", "14.3", "15.1", "15.2", "16.21.13", "16.21.14", "17.12",
              "20.30", "20.52", "20.59.1", "22.11.1", "22.19.73", "22.29.29", "23.11", "23.2", "23.3",
