@@ -1,18 +1,13 @@
-# from docx2python import docx2python
-# from PyPDF2 import PdfReader
-#
-# pdf_document = "616.pdf"
-# with open(pdf_document, "rb") as filehandle:
-#   pdf = PdfReader(filehandle)
-#   page1 = pdf.pages[17]
-#   print(page1.get_contents())
-#   print(page1.extract_text())
-# extract docx content
-# doc_result = docx2python('C:/Users/amisalimov/PycharmProjects/pythonFastDocs/app/ogranicheniya471.docx')
-# for el in doc_result.body:
-#    for i in el:
-#        print(i)
-item = '28.93.2'
+# with open('1292.txt', 'r', encoding='utf-8') as f:
+#     old = f.readlines()
+#     new_f = open('new_1292.txt', 'w')
+#     for el in old:
+#         if '.' in el:
+#             new_f.write(el)
+#     new_f.close()
+
+item = '26.30.23.000'
 for i in range(len(item), 0, -1):
     num = item[0: i]
     print(num)
+

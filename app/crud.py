@@ -5,7 +5,7 @@ from sqlalchemy import or_, and_
 
 def get_data(item, db, Model):
     result = defaultdict(lambda: {'name': '', 'exceptions': []})
-    
+
     if '.' in item:
         for i in range(len(item), 0, -1):
             num = item[:i]
@@ -22,7 +22,7 @@ def get_data(item, db, Model):
                 if not result[el.name]['name']:
                     result[el.name]['name'] = el.name
                 result[el.name]['exceptions'].append(el.exceptions)
-    
+
     return [res for res in result.values() if res['name']]
 
 def get_all(db: Session, item: str):
@@ -44,5 +44,5 @@ def get_all(db: Session, item: str):
             'share': get_data(ok.number, db, models.Share),
         }
         res.append(data)
-    
+
     return res

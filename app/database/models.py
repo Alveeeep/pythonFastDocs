@@ -66,5 +66,3 @@ class Share(Base):
     numbers = Column(TEXT)
     exceptions = Column(TEXT)
 
-
-
