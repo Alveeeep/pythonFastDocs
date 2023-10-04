@@ -1,7 +1,6 @@
 from sqlalchemy.orm import Session
 from .database import models
 from collections import defaultdict
-from sqlalchemy import or_, and_
 
 def get_data(item, db, Model):
     result = defaultdict(lambda: {'name': '', 'exceptions': []})

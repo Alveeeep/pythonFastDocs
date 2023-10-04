@@ -3,7 +3,8 @@ version: '3.9'
 services:
   app-fastapi:
     build: .
-    command: uvicorn app.main:app --host 0.0.0.0 --ssl-keyfile privkey.pem --ssl-certfile fullchain.pem
+    command: uvicorn app.main:app --host 0.0.0.0 --ssl-keyfile app/privkey.pem --ssl-
+certfile app/fullchain.pem
     ports:
       - "8888:8000"
     networks:
